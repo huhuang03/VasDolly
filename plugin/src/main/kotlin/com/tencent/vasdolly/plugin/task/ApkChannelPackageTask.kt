@@ -102,9 +102,11 @@ open class ApkChannelPackageTask : ChannelPackageTask() {
             signingConfig.enableV2Signing.get() -> {
                 generateV2ChannelApk(baseApk!!, outputDir!!, lowMemory, isFastMode)
             }
+
             signingConfig.enableV1Signing.get() -> {
                 generateV1ChannelApk(baseApk!!, outputDir!!, isFastMode)
             }
+
             else -> {
                 throw GradleException("not have precise channel package mode");
             }
@@ -130,6 +132,8 @@ open class ApkChannelPackageTask : ChannelPackageTask() {
         keyValue["versionCode"] = outInfo?.versionCode?.get().toString()
         keyValue["appId"] = variant?.applicationId?.get() ?: ""
         keyValue["buildTime"] = buildTime
+        keyValue["productFlavor"] = variant?.flavorName ?: ""
+        println("productFlavor: ${keyValue["productFlavor"]}")
 
         //默认文件名
         var apkNamePrefix = ChannelConfigExtension.DEFAULT_APK_NAME_FORMAT
